@@ -141,10 +141,14 @@ function [y] = phaseslope(x, n, norm)
 m   = size(x, 1); % total number of frequency bins
 y   = zeros(size(x));
 x(1:end-1,:,:,:,:) = conj(x(1:end-1,:,:,:,:)).*x(2:end,:,:,:,:);
+% the last element holds no product (there is no bin above it); zero it so
+% that windows reaching the highest bin do not add the raw coherency there
+x(end,:,:,:,:) = 0;
 
 if strcmp(norm, 'yes')
   coh = zeros(size(x));
   coh(1:end-1,:,:,:,:) = (abs(x(1:end-1,:,:,:,:)) .* abs(x(2:end,:,:,:,:))) + 1;
+  coh(end,:,:,:,:) = 1; % avoid 0/0 for the (zeroed) last element
   %FIXME why the +1? get the coherence
   for k = 1:m
     begindx = max(1,k-n);
