@@ -23,8 +23,11 @@ function test_rpt_chan_chan(testCase)
 
 nrpt    = 100;
 nchan   = 3;
-dimord  = 'rpt_chan_chan';
-input   = randn(nrpt, nchan, nchan) + 1i*randn(nrpt, nchan, nchan);
+nfreq   = 10;
+% the phase slope index is a slope across frequency, so the input needs a
+% frequency axis; with a single frequency bin the result is 0 for any nbin
+dimord  = 'rpt_chan_chan_freq';
+input   = randn(nrpt, nchan, nchan, nfreq) + 1i*randn(nrpt, nchan, nchan, nfreq);
 
 result = {};
 result{end+1} = ft_connectivity_psi(input, 'dimord', dimord, 'nbin', []);
