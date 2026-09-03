@@ -25,7 +25,10 @@ nrpt    = 100;
 nchan   = 3;
 nfreq   = 10;
 % the phase slope index is a slope across frequency, so the input needs a
-% frequency axis; with a single frequency bin the result is 0 for any nbin
+% frequency axis: with a single frequency bin (the former rpt_chan_chan input)
+% there is no adjacent bin to form a product with, the result is 0 for any
+% nbin, and the only nonzero output that input ever produced was the raw
+% top-bin coherency that the fix in ft_connectivity_psi removes
 dimord  = 'rpt_chan_chan_freq';
 input   = randn(nrpt, nchan, nchan, nfreq) + 1i*randn(nrpt, nchan, nchan, nfreq);
 
