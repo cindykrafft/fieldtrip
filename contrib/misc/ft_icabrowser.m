@@ -179,7 +179,7 @@ if ~isempty(colormap)
 end
 
 err      = 0;
-manpos   = [0.1 0.1 0.8 0.8]; % figure position, can be updated later
+manpos   = [0.1 0.1 0.5 0.5]; % figure position, can be updated later
 artifact = zeros(0,2);
 
 rej_str = {'Keep' 'Reject'};
