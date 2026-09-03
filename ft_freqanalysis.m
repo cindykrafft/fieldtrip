@@ -329,10 +329,14 @@ switch cfg.method
       if strcmp(cfg.toi, 'all') % each data sample gets a time window
         cfg.toi = linspace(begtim, endtim, round((endtim-begtim) ./ ...
           mean(diff(data.time{1})))+1);
-      elseif strcmp(cfg.toi(end), '%') % percent overlap between smallest time windows
+      elseif strcmp(cfg.toi(end), '%') % percent overlap between the shortest time windows
         overlap = str2double(cfg.toi(1:(end-1)))/100;
-        cfg.toi = linspace(begtim, endtim, round((endtim-begtim) ./ ...
-          (overlap * min(cfg.t_ftimwin))) + 1);
+        if ~isfinite(overlap) || overlap<0 || overlap>=1
+          ft_error('the percentage in cfg.toi should be at least 0 and smaller than 100');
+        end
+        % the step between consecutive time points is the non-overlapping part of the shortest window
+        step    = (1-overlap) * min(cfg.t_ftimwin);
+        cfg.toi = linspace(begtim, endtim, round((endtim-begtim) ./ step) + 1);
       else
         ft_error('cfg.toi should be either a numeric vector or a string: can be ''all'' or a percentage (e.g., ''50%'')');
       end
